@@ -55,7 +55,7 @@ public class EndingScreen implements Screen {
         game.viewport.update(width, height, true);
     }
 
-    private void getTextOffset(BitmapFont fontA, String text) {
+    private void getTextOffset(BitmapFont fontA,String text) {
         GlyphLayout layout = new GlyphLayout();
         layout.setText(fontA, text);
         float textWidth = layout.width;
