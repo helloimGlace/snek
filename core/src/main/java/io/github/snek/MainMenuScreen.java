@@ -12,7 +12,6 @@ public class MainMenuScreen implements Screen {
 
     public MainMenuScreen(final snek getGame) {
         this.game = getGame;
-
     }
 
     @Override
@@ -23,12 +22,12 @@ public class MainMenuScreen implements Screen {
     @Override
     public void render(float delta) {
         ScreenUtils.clear(Color.BLACK);
-        game.viewport.apply();
-        game.batch.setProjectionMatrix(game.viewport.getCamera().combined);
+        snek.viewport.apply();
+        snek.batch.setProjectionMatrix(snek.viewport.getCamera().combined);
 
-        game.batch.begin();
-        game.batch.draw(new Texture("homescreen.png"), 0, 0, game.viewport.getWorldWidth(), game.viewport.getWorldHeight());
-        game.batch.end();
+        snek.batch.begin();
+        snek.batch.draw(new Texture("homescreen.png"), 0, 0, snek.viewport.getWorldWidth(), snek.viewport.getWorldHeight());
+        snek.batch.end();
         if (Gdx.input.isTouched() || Gdx.input.isKeyPressed(Input.Keys.ENTER)) {
             game.setScreen(new GameScreen(game));
             dispose();
@@ -37,7 +36,7 @@ public class MainMenuScreen implements Screen {
 
     @Override
     public void resize(int width, int height) {
-        game.viewport.update(width, height, true);
+        snek.viewport.update(width, height, true);
     }
 
     @Override

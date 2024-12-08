@@ -3,57 +3,59 @@ package io.github.snek;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
-//import com.badlogic.gdx.audio.Music;
-//import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
-import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
+// Music and Sound will be added in the future lol
+// import com.badlogic.gdx.audio.Music;
+// import com.badlogic.gdx.audio.Sound;
 
 public class GameScreen implements Screen{
     final snek game;
 
-    //Direction "enums"
+    // Direction "enums"
     private static final char RIGHT = 'r';
     private static final char LEFT = 'l';
     private static final char UP = 'u';
     private static final char DOWN = 'd';
 
-    //Declaration of initial direction
-    static char direction = RIGHT;
-    static char tempDirection = RIGHT;
+    // Declaration of initial direction
+    static char direction;
+    static char tempDirection;
 
     // snek's grid size and movement timing.
-    private static float MOVE_TIME = 0.2F; // delay between movements
-    private static final int grid = 30;
-    private float timer = MOVE_TIME;
-    private int snekX, snekY;
-    private int snekXBeforeUpdate = 0, snekYBeforeUpdate = 0;
     private boolean move = false;
+    public static float MOVE_TIME_INIT = 0.2F; // Initial delay between movements.
+    public static float MOVE_TIME = MOVE_TIME_INIT;
+    private float timer = MOVE_TIME_INIT;
+    public static final int grid = 30;
+    public static int snekX, snekY;
+    public static int snekXBeforeUpdate = 0, snekYBeforeUpdate = 0;
 
-    //Sprite sheet columns and rows
+
+    // Sprite sheet columns and rows
     private static final int FRAME_COLS = 2, FRAME_ROWS = 1;
 
     // Sprites and textures for snek and apple.
-    private final Texture snekBody;
-    private final Sprite snekHead;
-    private final Sprite apple;
-    private final Animation<TextureRegion> snekDeathAnim;
-    float stateTime = 0f;
+    private final Texture snekDeathSheet;
+    public static Texture snekBody;
+    public static Sprite snekHead;
+    public static Sprite apple;
+    public static Animation<TextureRegion> snekDeathAnim;
+    public static float stateTime;
 
-    private boolean appleAvailable = false;
+    public static boolean appleAvailable = false;
+    public static int appleX, appleY;
+    public static int applesEaten;
     private boolean isDead = false;
-    private int appleX, appleY;
-    public static int applesEaten = 0;
 
     // The snek's body.
-    Array<BodyPart> bodyParts = new Array<>();
-    private float timeElapsed = 0;
+    static Array<BodyPart> bodyParts;
+    public static float timeElapsed;
 
 
     public GameScreen(final snek getGame){
@@ -64,12 +66,13 @@ public class GameScreen implements Screen{
         snekBody = new Texture("snek_body.png");
         apple = new Sprite(new Texture("apple.png"));
         apple.setSize(grid, grid);
+        bodyParts = new Array<>();
 
-        //Get death sprites from sheet
-        Texture snekDeathSheet = new Texture("snek_death_spritesheet.png");
+        // Get death sprites from sheet
+        snekDeathSheet = new Texture("snek_death_spritesheet.png");
         TextureRegion[][] tmp = TextureRegion.split(snekDeathSheet, snekDeathSheet.getWidth() / FRAME_COLS, snekDeathSheet.getHeight() / FRAME_ROWS);
 
-        //Load each frames into frames array
+        // Load each frames into frames array
         TextureRegion[] snekDeathFrames = new TextureRegion[FRAME_COLS * FRAME_ROWS];
         int index = 0;
         for (int i = 0; i < FRAME_ROWS; ++i) {
@@ -77,11 +80,21 @@ public class GameScreen implements Screen{
                 snekDeathFrames[index++] = tmp[i][j];
             }
         }
-        //snekDeathAnim is ready
-        snekDeathAnim = new Animation<TextureRegion>(0.25f, snekDeathFrames);
+        // snekDeathAnim is ready
+        snekDeathAnim = new Animation<>(0.25f, snekDeathFrames);
 
-        snekX = (int)game.viewport.getWorldWidth()/2;
-        snekY = (int)game.viewport.getWorldHeight()/2;
+        snekX = (int)snek.viewport.getWorldWidth()/2;
+        snekY = (int)snek.viewport.getWorldHeight()/2;
+
+        // Reset to the initial values each restart.
+        // (my (glace's) dumb ass forgot to do this, causing bugs like the score and
+        // speed not resetting or the death animation not playing after the first replay)
+        MOVE_TIME = MOVE_TIME_INIT;
+        applesEaten = 0;
+        stateTime = 0f;
+        timeElapsed = 0f;
+        direction = RIGHT;
+        tempDirection = RIGHT;
     }
 
     @Override
@@ -141,161 +154,37 @@ public class GameScreen implements Screen{
             timer -= delta;
             if (timer <= 0) {
                 timer = MOVE_TIME;
-                moveSnek();
+                SnekFunc.moveSnek();
                 move = true;
                 if (tempDirection != direction) {
                     direction = tempDirection;
                 }
-                isDead = checkForDeath();
-                checkForOutOfBounds();
-                updateBodyPartsPosition();
+                isDead = SnekFunc.checkForDeath();
+                SnekFunc.checkForOutOfBounds();
+                BodyPart.updateBodyPartsPosition();
             }
-            checkAppleCollision();
-        }
-    }
-
-    // The snek's movement logic function.
-    private void moveSnek() {
-        // Move the snek.
-        snekXBeforeUpdate = snekX;
-        snekYBeforeUpdate = snekY;
-        switch (direction) {
-            case RIGHT: {
-                snekX += grid;
-                return;
-            }
-            case LEFT: {
-                snekX -= grid;
-                return;
-            }
-            case UP: {
-                snekY += grid;
-                return;
-            }
-            case DOWN: {
-                snekY -= grid;
-            }
+            AppleFunc.checkAppleCollision();
         }
     }
 
     private void draw(float delta){
-        //Clears screen with color black
+        // Clears screen with color black.
         ScreenUtils.clear(Color.BLACK);
-        game.viewport.apply();
-        game.batch.setProjectionMatrix(game.viewport.getCamera().combined);
+        snek.viewport.apply();
+        snek.batch.setProjectionMatrix(snek.viewport.getCamera().combined);
 
-        game.batch.begin();
+        snek.batch.begin();
         if (!isDead) {
             snekHead.setPosition(snekX, snekY);
-            snekHead.draw(game.batch);
-        }
-        else {
-            snekDead(delta);
+            snekHead.draw(snek.batch);
+        } else {
+            SnekFunc.snekDead(delta);
         }
         for (BodyPart bodyPart: bodyParts) {
-            bodyPart.draw(game.batch);
+            bodyPart.draw(snek.batch);
         }
-        checkAndPlaceApple();
-        game.batch.end();
-    }
-
-    // Check for out of bounds.
-    private void checkForOutOfBounds() {
-        if (snekX >= game.viewport.getWorldWidth()) {
-            snekX = 0;
-        }
-        if (snekX < 0) {
-            snekX = (int)game.viewport.getWorldWidth() - grid;
-        }
-        if (snekY >= game.viewport.getWorldHeight()) {
-            snekY = 0;
-        }
-        if (snekY < 0) {
-            snekY = (int)game.viewport.getWorldWidth() - grid;
-        }
-    }
-
-    // Update the position of the body parts.
-    private void updateBodyPartsPosition() {
-        if (bodyParts.size > 0) {
-            BodyPart bodyPart = bodyParts.removeIndex(0);
-            bodyPart.updateBodyPosition(snekXBeforeUpdate, snekYBeforeUpdate);
-            bodyParts.add(bodyPart);
-        }
-    }
-
-    // Check for snek death.
-    private boolean checkForDeath() {
-        for (BodyPart bodyPart: bodyParts) {
-            if (bodyPart.x == snekX && bodyPart.y == snekY) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    // Check for empty space and place apple.
-    private void checkAndPlaceApple() {
-        if (!appleAvailable) {
-            boolean appleBodyCollide;
-            do {
-                appleBodyCollide = false;
-                appleX = MathUtils.random((int) game.viewport.getWorldWidth() / grid - 1) * grid;
-                appleY = MathUtils.random((int) game.viewport.getWorldHeight() / grid - 1) * grid;
-                for (BodyPart bodyPart : bodyParts) {
-                    if (bodyPart.x == appleX && bodyPart.y == appleY) {
-                        appleBodyCollide = true;
-                        break;
-                    }
-                }
-                if (appleX == snekX && appleY == snekY) {
-                    appleBodyCollide = true;
-                }
-            } while (appleBodyCollide);
-            appleAvailable = true;
-        }
-        apple.setPosition(appleX, appleY);
-        apple.draw(game.batch);
-    }
-
-    // Check for apple collision.
-    private void checkAppleCollision() {
-        if (appleAvailable && appleX == snekX && appleY == snekY) {
-            BodyPart bodyPart = new BodyPart(snekBody);
-            bodyPart.updateBodyPosition(snekX, snekY);
-            bodyParts.insert(0, bodyPart);
-            appleAvailable = false;
-            if (MOVE_TIME > .1f && applesEaten % 2 == 0) {
-                MOVE_TIME -= .01f;
-            }
-            applesEaten++;
-        }
-    }
-
-    // Body part class.
-    private class BodyPart {
-        private int x, y;
-        private final Texture texture;
-
-        public BodyPart(Texture texture) {
-            this.texture = texture;
-        }
-
-        public void updateBodyPosition(int x, int y) {
-            this.x = x;
-            this.y = y;
-        }
-
-        public void draw(Batch batch) {
-            if (!(x == snekX && y == snekY)) batch.draw(texture, x, y, grid, grid);
-        }
-    }
-
-    private void snekDead(float delta) {
-        stateTime += delta;
-        timeElapsed += delta;
-        TextureRegion currentFrame = snekDeathAnim.getKeyFrame(stateTime, true);
-        game.batch.draw(currentFrame, snekX, snekY, grid, grid);
+        AppleFunc.checkAndPlaceApple();
+        snek.batch.end();
     }
 
     @Override
@@ -323,5 +212,6 @@ public class GameScreen implements Screen{
         snekHead.getTexture().dispose();
         snekBody.dispose();
         apple.getTexture().dispose();
+        snekDeathSheet.dispose();
     }
 }

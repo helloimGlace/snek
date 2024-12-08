@@ -8,9 +8,9 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 
 public class snek extends Game {
-    public SpriteBatch batch;
-    public BitmapFont font, fontSmall;
-    public FitViewport viewport;
+    public static SpriteBatch batch;
+    public BitmapFont font, fontSmall, fontTiny;
+    public static FitViewport viewport;
 
     public void create() {
         FreeTypeFontGenerator fontGenerator = new FreeTypeFontGenerator(Gdx.files.internal("irrep.ttf"));
@@ -21,6 +21,8 @@ public class snek extends Game {
         fontParameter.size = 60;
         fontSmall = fontGenerator.generateFont(fontParameter);
         viewport = new FitViewport(600, 600);
+        fontParameter.size = 30;
+        fontTiny = fontGenerator.generateFont(fontParameter);
 
         font.setUseIntegerPositions(false);
         font.getData().setScale(viewport.getWorldHeight() / Gdx.graphics.getHeight());
