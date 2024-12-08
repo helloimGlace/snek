@@ -15,14 +15,14 @@ public class EndingScreen implements Screen {
     private static float textYOffset;
 
 
-    private static float worldWidth = 0;
-    private static float worldHeight = 0;
+    private static float worldWidth;
+    private static float worldHeight;
 
     public EndingScreen(final snek getGame) {
         this.game = getGame;
 
-        worldWidth = game.viewport.getWorldWidth();
-        worldHeight = game.viewport.getWorldHeight();
+        worldWidth = snek.viewport.getWorldWidth();
+        worldHeight = snek.viewport.getWorldHeight();
     }
 
     @Override
@@ -33,35 +33,41 @@ public class EndingScreen implements Screen {
     @Override
     public void render(float delta) {
         ScreenUtils.clear(Color.BLACK);
-        game.viewport.apply();
-        game.batch.setProjectionMatrix(game.viewport.getCamera().combined);
+        snek.viewport.apply();
+        snek.batch.setProjectionMatrix(snek.viewport.getCamera().combined);
 
-        game.batch.begin();
+        snek.batch.begin();
         getTextOffset(game.font, "ur ded (XP)");
-        game.font.draw(game.batch, "ur ded (XP)", textXOffset, 500);
+        game.font.draw(snek.batch, "ur ded (XP)", textXOffset, 500);
         getTextOffset(game.font, "final score: " + GameScreen.applesEaten);
-        game.font.draw(game.batch, "final score: " + GameScreen.applesEaten, textXOffset, 380);
+        game.font.draw(snek.batch, "final score: " + GameScreen.applesEaten, textXOffset, 380);
         getTextOffset(game.fontSmall, "(click or enter to restart)");
-        game.fontSmall.draw(game.batch, "(click or enter to restart)", textXOffset, 200);
-        game.batch.end();
+        game.fontSmall.draw(snek.batch, "(click or enter to restart)", textXOffset, 200);
+        game.fontTiny.draw(snek.batch, "press esc to exit to main menu", 1, 50);
+        snek.batch.end();
         if (Gdx.input.isTouched() || Gdx.input.isKeyPressed(Input.Keys.ENTER)) {
             game.setScreen(new GameScreen(game));
             dispose();
         }
+        if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
+            game.setScreen(new MainMenuScreen(game));
+            dispose();
+        }
     }
 
-    @Override
-    public void resize(int width, int height) {
-        game.viewport.update(width, height, true);
-    }
-
-    private void getTextOffset(BitmapFont fontA,String text) {
+    // Get the offset for the text to be centered.
+    private void getTextOffset(BitmapFont fontA, String text) {
         GlyphLayout layout = new GlyphLayout();
         layout.setText(fontA, text);
         float textWidth = layout.width;
         float textHeight = layout.height;
         textXOffset = (worldWidth - textWidth) / 2;
         textYOffset = (worldHeight - textHeight) / 2;
+    }
+
+    @Override
+    public void resize(int width, int height) {
+        snek.viewport.update(width, height, true);
     }
 
     @Override
