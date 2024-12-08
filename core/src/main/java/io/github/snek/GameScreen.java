@@ -321,6 +321,9 @@ public class GameScreen implements Screen{
 
     }
 
+    // Unused wait function, extremely bad implementation
+    // (literally just sleeps the thread) so please don't use it lol
+    /*
     private static void wait(int ms) {
         try {
             Thread.sleep(ms);
@@ -328,4 +331,5 @@ public class GameScreen implements Screen{
             Thread.currentThread().interrupt();
         }
     }
+    */
 }
