@@ -35,6 +35,7 @@ public class snek extends Game {
     public void dispose() {
         batch.dispose();
         font.dispose();
+        fontSmall.dispose();
     }
 
 }
