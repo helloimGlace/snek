@@ -53,7 +53,7 @@ public class GameScreen implements Screen{
 
     // The snek's body.
     Array<BodyPart> bodyParts = new Array<>();
-    private long timeElapsed = 0;
+    private float timeElapsed = 0;
 
 
     public GameScreen(final snek getGame){
@@ -94,7 +94,7 @@ public class GameScreen implements Screen{
         input();
         logic(delta);
         draw(delta);
-        if (isDead && timeElapsed > 2) {
+        if (isDead && timeElapsed > 2f) {
             game.setScreen(new EndingScreen(game));
             dispose();
         }
@@ -293,7 +293,7 @@ public class GameScreen implements Screen{
 
     private void snekDead(float delta) {
         stateTime += delta;
-        timeElapsed += (long) delta;
+        timeElapsed += delta;
         TextureRegion currentFrame = snekDeathAnim.getKeyFrame(stateTime, true);
         game.batch.draw(currentFrame, snekX, snekY, grid, grid);
     }
@@ -323,8 +323,5 @@ public class GameScreen implements Screen{
         snekHead.getTexture().dispose();
         snekBody.dispose();
         apple.getTexture().dispose();
-        for (BodyPart bodyPart: bodyParts) {
-            bodyPart.texture.dispose();
-        }
     }
 }
