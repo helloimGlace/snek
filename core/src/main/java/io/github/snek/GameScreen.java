@@ -31,7 +31,7 @@ public class GameScreen implements Screen{
     private static float MOVE_TIME = 0.2F; // delay between movements
     private static final int grid = 30;
     private float timer = MOVE_TIME;
-    private int snekX = 0, snekY = 0;
+    private int snekX, snekY;
     private int snekXBeforeUpdate = 0, snekYBeforeUpdate = 0;
     private boolean move = false;
 
@@ -315,10 +315,6 @@ public class GameScreen implements Screen{
         snekHead.getTexture().dispose();
         snekBody.dispose();
         apple.getTexture().dispose();
-        for (BodyPart bodyPart: bodyParts) {
-            bodyPart.texture.dispose();
-        }
-
     }
 
     // Unused wait function, extremely bad implementation

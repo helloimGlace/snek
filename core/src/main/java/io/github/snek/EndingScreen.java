@@ -37,11 +37,11 @@ public class EndingScreen implements Screen {
         game.batch.setProjectionMatrix(game.viewport.getCamera().combined);
 
         game.batch.begin();
-        getTextOffest(game.font, "ur ded (XP)");
+        getTextOffset(game.font, "ur ded (XP)");
         game.font.draw(game.batch, "ur ded (XP)", textXOffset, 500);
-        getTextOffest(game.font, "final score: " + GameScreen.applesEaten);
+        getTextOffset(game.font, "final score: " + GameScreen.applesEaten);
         game.font.draw(game.batch, "final score: " + GameScreen.applesEaten, textXOffset, 380);
-        getTextOffest(game.fontSmall, "(click or enter to restart)");
+        getTextOffset(game.fontSmall, "(click or enter to restart)");
         game.fontSmall.draw(game.batch, "(click or enter to restart)", textXOffset, 200);
         game.batch.end();
         if (Gdx.input.isTouched() || Gdx.input.isKeyPressed(Input.Keys.ENTER)) {
@@ -55,7 +55,7 @@ public class EndingScreen implements Screen {
         game.viewport.update(width, height, true);
     }
 
-    private void getTextOffest(BitmapFont fontA,String text) {
+    private void getTextOffset(BitmapFont fontA,String text) {
         GlyphLayout layout = new GlyphLayout();
         layout.setText(fontA, text);
         float textWidth = layout.width;
