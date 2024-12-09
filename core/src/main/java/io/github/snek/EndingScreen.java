@@ -46,7 +46,11 @@ public class EndingScreen implements Screen {
         game.fontTiny.draw(snek.batch, "press esc to exit to main menu", 1, 50);
         snek.batch.end();
         if (Gdx.input.isTouched() || Gdx.input.isKeyPressed(Input.Keys.ENTER)) {
-            game.setScreen(new GameScreen(game));
+            InputBufferer inputBufferer = new InputBufferer();
+            // Remove previously initialized processor.
+            Gdx.input.setInputProcessor(null);
+            Gdx.input.setInputProcessor(inputBufferer);
+            game.setScreen(new GameScreen(game, inputBufferer));
             dispose();
         }
         if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
