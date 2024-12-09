@@ -18,30 +18,6 @@ public class SnekFunc {
         this.game = game;
     }
 
-    // The snek's movement logic function.
-    public static void moveSnek() {
-        // Move the snek.
-        snekXBeforeUpdate = snekX;
-        snekYBeforeUpdate = snekY;
-        switch (direction) {
-            case RIGHT: {
-                snekX += grid;
-                return;
-            }
-            case LEFT: {
-                snekX -= grid;
-                return;
-            }
-            case UP: {
-                snekY += grid;
-                return;
-            }
-            case DOWN: {
-                snekY -= grid;
-            }
-        }
-    }
-
     // Check for snek death.
     public static boolean checkForDeath() {
         for (BodyPart bodyPart: bodyParts) {

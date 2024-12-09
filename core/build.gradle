@@ -4,8 +4,8 @@ eclipse.project.name = appName + '-core'
 dependencies {
   api "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
   api "com.badlogicgames.gdx:gdx:$gdxVersion"
-  api "com.github.crykn.guacamole:core:$guacamoleVersion"
-  api "com.github.crykn.guacamole:gdx:$guacamoleVersion"
+  // api "com.github.crykn.guacamole:core:$guacamoleVersion"
+  // api "com.github.crykn.guacamole:gdx:$guacamoleVersion"
 
   if(enableGraalNative == 'true') {
     implementation "io.github.berstanio:gdx-svmhelper-annotations:$graalHelperVersion"

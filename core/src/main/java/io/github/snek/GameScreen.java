@@ -1,7 +1,5 @@
 package io.github.snek;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
@@ -10,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
+import static io.github.snek.Direction.*;
 // Music and Sound will be added in the future lol
 // import com.badlogic.gdx.audio.Music;
 // import com.badlogic.gdx.audio.Sound;
@@ -17,19 +16,12 @@ import com.badlogic.gdx.utils.ScreenUtils;
 public class GameScreen implements Screen{
     final snek game;
 
-    // Direction "enums"
-    private static final char RIGHT = 'r';
-    private static final char LEFT = 'l';
-    private static final char UP = 'u';
-    private static final char DOWN = 'd';
-
     // Declaration of initial direction
-    static char direction;
-    static char tempDirection;
+    public static Direction direction;
 
     // snek's grid size and movement timing.
-    private boolean move = false;
-    public static float MOVE_TIME_INIT = 0.2F; // Initial delay between movements.
+    // public static boolean moveUpdate;
+    public static float MOVE_TIME_INIT = 0.16F; // Initial delay between movements.
     public static float MOVE_TIME = MOVE_TIME_INIT;
     private float timer = MOVE_TIME_INIT;
     public static final int grid = 30;
@@ -57,16 +49,22 @@ public class GameScreen implements Screen{
     static Array<BodyPart> bodyParts;
     public static float timeElapsed;
 
+    static Array<Direction> inputQueue;
+    public static final int maxInQueue = 3; // Maximum of 3 inputs in the queue.
 
     public GameScreen(final snek getGame){
         this.game = getGame;
 
+        // Load snek and apple sprites.
         snekHead = new Sprite(new Texture("snek_head.png"));
         snekHead.setSize(grid, grid);
         snekBody = new Texture("snek_body.png");
         apple = new Sprite(new Texture("apple.png"));
         apple.setSize(grid, grid);
+
+        // Initialize body parts and input queue.
         bodyParts = new Array<>();
+        inputQueue = new Array<>();
 
         // Get death sprites from sheet
         snekDeathSheet = new Texture("snek_death_spritesheet.png");
@@ -94,7 +92,7 @@ public class GameScreen implements Screen{
         stateTime = 0f;
         timeElapsed = 0f;
         direction = RIGHT;
-        tempDirection = RIGHT;
+        // moveUpdate = true;
     }
 
     @Override
@@ -115,38 +113,7 @@ public class GameScreen implements Screen{
 
     // Input for the snek.
     private void input() {
-        if (Gdx.input.isKeyPressed(Input.Keys.UP) && direction != DOWN) {
-            if (!move) {
-                tempDirection = UP;
-            } else {
-                direction = UP;
-                move = false;
-            }
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.LEFT) && direction != RIGHT) {
-            if (!move) {
-                tempDirection = LEFT;
-            } else {
-                direction = LEFT;
-                move = false;
-            }
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.DOWN) && direction != UP) {
-            if (!move) {
-                tempDirection = DOWN;
-            } else {
-                direction = DOWN;
-                move = false;
-            }
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) && direction != LEFT) {
-            if (!move) {
-                tempDirection = RIGHT;
-            } else {
-                direction = RIGHT;
-                move = false;
-            }
-        }
+        Movement.queueInput();
     }
 
     private void logic(float delta) {
@@ -154,11 +121,7 @@ public class GameScreen implements Screen{
             timer -= delta;
             if (timer <= 0) {
                 timer = MOVE_TIME;
-                SnekFunc.moveSnek();
-                move = true;
-                if (tempDirection != direction) {
-                    direction = tempDirection;
-                }
+                Movement.moveSnek();
                 isDead = SnekFunc.checkForDeath();
                 SnekFunc.checkForOutOfBounds();
                 BodyPart.updateBodyPartsPosition();

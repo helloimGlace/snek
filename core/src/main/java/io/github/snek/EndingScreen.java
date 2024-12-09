@@ -14,7 +14,6 @@ public class EndingScreen implements Screen {
     private static float textXOffset;
     private static float textYOffset;
 
-
     private static float worldWidth;
     private static float worldHeight;
 
