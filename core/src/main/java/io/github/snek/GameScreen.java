@@ -1,7 +1,5 @@
 package io.github.snek;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
@@ -17,25 +15,17 @@ import com.badlogic.gdx.utils.ScreenUtils;
 public class GameScreen implements Screen{
     final snek game;
 
-    // Direction "enums"
-    private static final char RIGHT = 'r';
-    private static final char LEFT = 'l';
-    private static final char UP = 'u';
-    private static final char DOWN = 'd';
-
-    // Declaration of initial direction
-    static char direction;
-    static char tempDirection;
+    // Declaration of initial direction and buffer
+    public static Direction direction = Direction.RIGHT;
+    public static Array<Direction> inputBuffer;
 
     // snek's grid size and movement timing.
-    private boolean move = false;
     public static float MOVE_TIME_INIT = 0.2F; // Initial delay between movements.
     public static float MOVE_TIME = MOVE_TIME_INIT;
     private float timer = MOVE_TIME_INIT;
     public static final int grid = 30;
     public static int snekX, snekY;
     public static int snekXBeforeUpdate = 0, snekYBeforeUpdate = 0;
-
 
     // Sprite sheet columns and rows
     private static final int FRAME_COLS = 2, FRAME_ROWS = 1;
@@ -58,7 +48,7 @@ public class GameScreen implements Screen{
     public static float timeElapsed;
 
 
-    public GameScreen(final snek getGame){
+    public GameScreen(final snek getGame, final InputBufferer inputBufferer){
         this.game = getGame;
 
         snekHead = new Sprite(new Texture("snek_head.png"));
@@ -93,8 +83,9 @@ public class GameScreen implements Screen{
         applesEaten = 0;
         stateTime = 0f;
         timeElapsed = 0f;
-        direction = RIGHT;
-        tempDirection = RIGHT;
+
+        direction = Direction.RIGHT;
+        inputBuffer = inputBufferer.inputBuffer;
     }
 
     @Override
@@ -104,48 +95,11 @@ public class GameScreen implements Screen{
 
     @Override
     public void render(float delta) {
-        input();
         logic(delta);
         draw(delta);
         if (isDead && timeElapsed > 2f) {
             game.setScreen(new EndingScreen(game));
             dispose();
-        }
-    }
-
-    // Input for the snek.
-    private void input() {
-        if (Gdx.input.isKeyPressed(Input.Keys.UP) && direction != DOWN) {
-            if (!move) {
-                tempDirection = UP;
-            } else {
-                direction = UP;
-                move = false;
-            }
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.LEFT) && direction != RIGHT) {
-            if (!move) {
-                tempDirection = LEFT;
-            } else {
-                direction = LEFT;
-                move = false;
-            }
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.DOWN) && direction != UP) {
-            if (!move) {
-                tempDirection = DOWN;
-            } else {
-                direction = DOWN;
-                move = false;
-            }
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) && direction != LEFT) {
-            if (!move) {
-                tempDirection = RIGHT;
-            } else {
-                direction = RIGHT;
-                move = false;
-            }
         }
     }
 
@@ -155,10 +109,14 @@ public class GameScreen implements Screen{
             if (timer <= 0) {
                 timer = MOVE_TIME;
                 SnekFunc.moveSnek();
-                move = true;
-                if (tempDirection != direction) {
-                    direction = tempDirection;
+
+                Direction newDirection = direction;
+                if (inputBuffer.notEmpty()) {
+                    newDirection = inputBuffer.removeIndex(0);
                 }
+
+                direction = newDirection;
+
                 isDead = SnekFunc.checkForDeath();
                 SnekFunc.checkForOutOfBounds();
                 BodyPart.updateBodyPartsPosition();

@@ -29,7 +29,11 @@ public class MainMenuScreen implements Screen {
         snek.batch.draw(new Texture("homescreen.png"), 0, 0, snek.viewport.getWorldWidth(), snek.viewport.getWorldHeight());
         snek.batch.end();
         if (Gdx.input.isTouched() || Gdx.input.isKeyPressed(Input.Keys.ENTER)) {
-            game.setScreen(new GameScreen(game));
+            InputBufferer inputBufferer = new InputBufferer();
+            // Remove previously initialized processor.
+            Gdx.input.setInputProcessor(null);
+            Gdx.input.setInputProcessor(inputBufferer);
+            game.setScreen(new GameScreen(game, inputBufferer));
             dispose();
         }
     }
