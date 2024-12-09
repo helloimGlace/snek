@@ -17,15 +17,9 @@ import com.badlogic.gdx.utils.ScreenUtils;
 public class GameScreen implements Screen{
     final snek game;
 
-    // Direction "enums"
-    private static final char RIGHT = 'r';
-    private static final char LEFT = 'l';
-    private static final char UP = 'u';
-    private static final char DOWN = 'd';
-
     // Declaration of initial direction
-    static char direction;
-    static char tempDirection;
+    public static Direction direction;
+    public Direction tempDirection;
 
     // snek's grid size and movement timing.
     private boolean move = false;
@@ -93,8 +87,8 @@ public class GameScreen implements Screen{
         applesEaten = 0;
         stateTime = 0f;
         timeElapsed = 0f;
-        direction = RIGHT;
-        tempDirection = RIGHT;
+        direction = Direction.RIGHT;
+        tempDirection = Direction.RIGHT;
     }
 
     @Override
@@ -115,35 +109,35 @@ public class GameScreen implements Screen{
 
     // Input for the snek.
     private void input() {
-        if (Gdx.input.isKeyPressed(Input.Keys.UP) && direction != DOWN) {
+        if (Gdx.input.isKeyPressed(Input.Keys.UP) && direction != Direction.UP) {
             if (!move) {
-                tempDirection = UP;
+                tempDirection = Direction.UP;
             } else {
-                direction = UP;
+                direction = Direction.UP;
                 move = false;
             }
         }
-        if (Gdx.input.isKeyPressed(Input.Keys.LEFT) && direction != RIGHT) {
+        if (Gdx.input.isKeyPressed(Input.Keys.LEFT) && direction != Direction.RIGHT) {
             if (!move) {
-                tempDirection = LEFT;
+                tempDirection = Direction.LEFT;
             } else {
-                direction = LEFT;
+                direction = Direction.LEFT;
                 move = false;
             }
         }
-        if (Gdx.input.isKeyPressed(Input.Keys.DOWN) && direction != UP) {
+        if (Gdx.input.isKeyPressed(Input.Keys.DOWN) && direction != Direction.UP) {
             if (!move) {
-                tempDirection = DOWN;
+                tempDirection = Direction.DOWN;
             } else {
-                direction = DOWN;
+                direction = Direction.DOWN;
                 move = false;
             }
         }
-        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) && direction != LEFT) {
+        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) && direction != Direction.LEFT) {
             if (!move) {
-                tempDirection = RIGHT;
+                tempDirection = Direction.RIGHT;
             } else {
-                direction = RIGHT;
+                direction = Direction.RIGHT;
                 move = false;
             }
         }

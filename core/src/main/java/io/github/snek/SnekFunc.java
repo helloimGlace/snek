@@ -3,16 +3,9 @@ package io.github.snek;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 import static io.github.snek.GameScreen.*;
-
 // Functions for the snek.
 public class SnekFunc {
     final snek game;
-
-    // Direction "enums"
-    private static final char RIGHT = 'r';
-    private static final char LEFT = 'l';
-    private static final char UP = 'u';
-    private static final char DOWN = 'd';
 
     public SnekFunc(snek game) {
         this.game = game;
