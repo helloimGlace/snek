@@ -8,12 +8,6 @@ import static io.github.snek.GameScreen.*;
 public class SnekFunc {
     final snek game;
 
-    // Direction "enums"
-    private static final char RIGHT = 'r';
-    private static final char LEFT = 'l';
-    private static final char UP = 'u';
-    private static final char DOWN = 'd';
-
     public SnekFunc(snek game) {
         this.game = game;
     }
