@@ -13,15 +13,15 @@ public class snek extends Game {
     public static FitViewport viewport;
 
     public void create() {
-        FreeTypeFontGenerator fontGenerator = new FreeTypeFontGenerator(Gdx.files.internal("irrep.ttf"));
+        FreeTypeFontGenerator fontGenerator = new FreeTypeFontGenerator(Gdx.files.internal("I_drawed_this.otf"));
         FreeTypeFontGenerator.FreeTypeFontParameter fontParameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-        fontParameter.size = 120;
+        fontParameter.size = 90;
         batch = new SpriteBatch();
         font = fontGenerator.generateFont(fontParameter);
-        fontParameter.size = 60;
+        fontParameter.size = 45;
         fontSmall = fontGenerator.generateFont(fontParameter);
         viewport = new FitViewport(600, 600);
-        fontParameter.size = 30;
+        fontParameter.size = 25;
         fontTiny = fontGenerator.generateFont(fontParameter);
 
         font.setUseIntegerPositions(false);
@@ -38,6 +38,7 @@ public class snek extends Game {
         batch.dispose();
         font.dispose();
         fontSmall.dispose();
+        fontTiny.dispose();
     }
 
 }

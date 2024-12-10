@@ -60,7 +60,11 @@ public class GameScreen implements Screen{
 
         // Get death sprites from sheet
         snekDeathSheet = new Texture("snek_death_spritesheet.png");
-        TextureRegion[][] tmp = TextureRegion.split(snekDeathSheet, snekDeathSheet.getWidth() / FRAME_COLS, snekDeathSheet.getHeight() / FRAME_ROWS);
+        TextureRegion[][] tmp = TextureRegion.split(
+            snekDeathSheet,
+            snekDeathSheet.getWidth() / FRAME_COLS,
+            snekDeathSheet.getHeight() / FRAME_ROWS
+        );
 
         // Load each frames into frames array
         TextureRegion[] snekDeathFrames = new TextureRegion[FRAME_COLS * FRAME_ROWS];

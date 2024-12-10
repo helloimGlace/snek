@@ -30,7 +30,7 @@ public class InputBufferer implements InputProcessor {
     public boolean keyDown(int keycode) {
         Direction inputDirection = directionMap.get(keycode);
         if (inputBuffer.size >= bufferMaxSize) {
-            return true;
+            return true; // Buffer is full, ignore input.
         }
         if (
             inputDirection != null &&

@@ -43,7 +43,7 @@ public class EndingScreen implements Screen {
         game.font.draw(snek.batch, "final score: " + GameScreen.applesEaten, textXOffset, 380);
         getTextOffset(game.fontSmall, "(click or enter to restart)");
         game.fontSmall.draw(snek.batch, "(click or enter to restart)", textXOffset, 200);
-        game.fontTiny.draw(snek.batch, "press esc to exit to main menu", 1, 50);
+        game.fontTiny.draw(snek.batch, "press esc to exit to main menu", 1, 28);
         snek.batch.end();
         if (Gdx.input.isTouched() || Gdx.input.isKeyPressed(Input.Keys.ENTER)) {
             InputBufferer inputBufferer = new InputBufferer();
