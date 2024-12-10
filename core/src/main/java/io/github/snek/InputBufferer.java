@@ -7,6 +7,8 @@ import java.util.HashMap;
 
 public class InputBufferer implements InputProcessor {
 
+    final int bufferMaxSize = 3; // Limits the max amount of inputs being queued in the buffer.
+
     private final HashMap<Integer, Direction> directionMap = new HashMap<Integer, Direction>() {{
         put(19, Direction.UP);
         put(20, Direction.DOWN);
@@ -27,10 +29,13 @@ public class InputBufferer implements InputProcessor {
     @Override
     public boolean keyDown(int keycode) {
         Direction inputDirection = directionMap.get(keycode);
+        if (inputBuffer.size >= bufferMaxSize) {
+            return true;
+        }
         if (
             inputDirection != null &&
-                inputDirection != currentDirectionInput &&
-                blacklisted.get(currentDirectionInput) != inputDirection
+            inputDirection != currentDirectionInput &&
+            blacklisted.get(currentDirectionInput) != inputDirection
         ) {
             currentDirectionInput = inputDirection;
             inputBuffer.add(inputDirection);

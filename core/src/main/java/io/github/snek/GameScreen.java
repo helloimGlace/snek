@@ -18,9 +18,10 @@ public class GameScreen implements Screen{
     // Declaration of initial direction and buffer
     public static Direction direction = Direction.RIGHT;
     public static Array<Direction> inputBuffer;
+    private final int bufferMaxSize = 3;
 
     // snek's grid size and movement timing.
-    public static float MOVE_TIME_INIT = 0.2F; // Initial delay between movements.
+    public static float MOVE_TIME_INIT = .16F; // Initial delay between movements.
     public static float MOVE_TIME = MOVE_TIME_INIT;
     private float timer = MOVE_TIME_INIT;
     public static final int grid = 30;
@@ -77,8 +78,6 @@ public class GameScreen implements Screen{
         snekY = (int)snek.viewport.getWorldHeight()/2;
 
         // Reset to the initial values each restart.
-        // (my (glace's) dumb ass forgot to do this, causing bugs like the score and
-        // speed not resetting or the death animation not playing after the first replay)
         MOVE_TIME = MOVE_TIME_INIT;
         applesEaten = 0;
         stateTime = 0f;

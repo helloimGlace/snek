@@ -42,7 +42,7 @@ public class AppleFunc {
             bodyPart.updateBodyPosition(snekX, snekY);
             bodyParts.insert(0, bodyPart);
             appleAvailable = false;
-            if (MOVE_TIME > .1f && applesEaten % 2 == 0) {
+            if (MOVE_TIME > .08f && applesEaten % 2 == 0) {
                 MOVE_TIME -= .01f;
             }
             applesEaten++;
