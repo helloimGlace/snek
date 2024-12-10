@@ -18,7 +18,6 @@ public class GameScreen implements Screen{
     // Declaration of initial direction and buffer
     public static Direction direction = Direction.RIGHT;
     public static Array<Direction> inputBuffer;
-    private final int bufferMaxSize = 3;
 
     // snek's grid size and movement timing.
     public static float MOVE_TIME_INIT = .16F; // Initial delay between movements.
