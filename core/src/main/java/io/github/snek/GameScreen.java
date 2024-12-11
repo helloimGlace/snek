@@ -1,11 +1,10 @@
 package io.github.snek;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Animation;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
 // Music and Sound will be added in the future lol
@@ -38,9 +37,17 @@ public class GameScreen implements Screen{
     public static Animation<TextureRegion> snekDeathAnim;
     public static float stateTime;
 
+    // Particles system for snek's apple.
+    TextureAtlas atlas;
+    ParticleEffectPool appleEffectPool;
+    static Array<ParticleEffectPool.PooledEffect> effects = new Array<>();
+    ParticleEffect appleEffects = new ParticleEffect();
+
+
     public static boolean appleAvailable = false;
     public static int appleX, appleY;
     public static int applesEaten;
+    private boolean appleEaten = false;
     private boolean isDead = false;
 
     // The snek's body.
@@ -48,7 +55,8 @@ public class GameScreen implements Screen{
     public static float timeElapsed;
 
 
-    public GameScreen(final snek getGame, final InputBufferer inputBufferer){
+
+    public GameScreen(final snek getGame, final InputBufferer inputBufferer) {
         this.game = getGame;
 
         snekHead = new Sprite(new Texture("snek_head.png"));
@@ -57,6 +65,7 @@ public class GameScreen implements Screen{
         apple = new Sprite(new Texture("apple.png"));
         apple.setSize(grid, grid);
         bodyParts = new Array<>();
+        bodyParts.add(new BodyPart(snekBody)); // snek starts with 1 body part.
 
         // Get death sprites from sheet
         snekDeathSheet = new Texture("snek_death_spritesheet.png");
@@ -77,8 +86,14 @@ public class GameScreen implements Screen{
         // snekDeathAnim is ready
         snekDeathAnim = new Animation<>(0.25f, snekDeathFrames);
 
+        atlas = new TextureAtlas();
+        atlas.addRegion("apple_eat", new TextureRegion(new Texture("particles/apple_eat.png")));
+        appleEffects.load(Gdx.files.internal("particles/apple_eat.p"), atlas);
+        appleEffectPool = new ParticleEffectPool(appleEffects, 1, 2);
+
         snekX = (int)snek.viewport.getWorldWidth()/2;
         snekY = (int)snek.viewport.getWorldHeight()/2;
+        bodyParts.get(0).updateBodyPosition(snekX-grid, snekY);
 
         // Reset to the initial values each restart.
         MOVE_TIME = MOVE_TIME_INIT;
@@ -123,7 +138,7 @@ public class GameScreen implements Screen{
                 SnekFunc.checkForOutOfBounds();
                 BodyPart.updateBodyPartsPosition();
             }
-            AppleFunc.checkAppleCollision();
+            appleEaten = AppleFunc.checkAppleCollision();
         }
     }
 
@@ -134,7 +149,23 @@ public class GameScreen implements Screen{
         snek.batch.setProjectionMatrix(snek.viewport.getCamera().combined);
 
         snek.batch.begin();
+        for (int i = 0; i < effects.size; i++) {
+            ParticleEffectPool.PooledEffect effect = effects.get(i);
+
+            effect.draw(snek.batch, delta);
+            if (effect.isComplete()) {
+                effect.free();
+                effects.removeIndex(i);
+            }
+        }
         if (!isDead) {
+            if (appleEaten) {
+                ParticleEffectPool.PooledEffect effect = appleEffectPool.obtain();
+                effect.setPosition(appleX+(grid/2f), appleY+(grid/2f));
+                effects.add(effect);
+                appleEaten = false;
+            }
+
             snekHead.setPosition(snekX, snekY);
             snekHead.draw(snek.batch);
         } else {
@@ -173,5 +204,9 @@ public class GameScreen implements Screen{
         snekBody.dispose();
         apple.getTexture().dispose();
         snekDeathSheet.dispose();
+        appleEffects.dispose();
+        for (int i = effects.size - 1; i >= 0; i--)
+            effects.get(i).free();
+        effects.clear();
     }
 }

@@ -36,7 +36,7 @@ public class AppleFunc {
     }
 
     // Check for apple collision.
-    public static void checkAppleCollision() {
+    public static boolean checkAppleCollision() {
         if (appleAvailable && appleX == snekX && appleY == snekY) {
             BodyPart bodyPart = new BodyPart(snekBody);
             bodyPart.updateBodyPosition(snekX, snekY);
@@ -46,6 +46,8 @@ public class AppleFunc {
                 MOVE_TIME -= .01f;
             }
             applesEaten++;
+            return true;
         }
+        return false;
     }
 }
