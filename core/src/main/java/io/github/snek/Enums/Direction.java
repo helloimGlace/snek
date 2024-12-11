@@ -1,4 +1,4 @@
-package io.github.snek;
+package io.github.snek.Enums;
 
 public enum Direction {
     UP,

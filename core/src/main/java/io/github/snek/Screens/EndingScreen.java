@@ -1,4 +1,4 @@
-package io.github.snek;
+package io.github.snek.Screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -7,6 +7,8 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import io.github.snek.Functions.*;
+import io.github.snek.snek;
 
 public class EndingScreen implements Screen {
     final snek game;

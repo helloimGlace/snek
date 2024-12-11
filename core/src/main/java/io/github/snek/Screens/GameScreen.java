@@ -1,5 +1,6 @@
-package io.github.snek;
+package io.github.snek.Screens;
 
+import io.github.snek.snek;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
@@ -7,6 +8,8 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
+import io.github.snek.Functions.*;
+import io.github.snek.Enums.*;
 // Music and Sound will be added in the future lol
 // import com.badlogic.gdx.audio.Music;
 // import com.badlogic.gdx.audio.Sound;
@@ -51,7 +54,7 @@ public class GameScreen implements Screen{
     private boolean isDead = false;
 
     // The snek's body.
-    static Array<BodyPart> bodyParts;
+    public static Array<BodyPart> bodyParts;
     public static float timeElapsed;
 
 

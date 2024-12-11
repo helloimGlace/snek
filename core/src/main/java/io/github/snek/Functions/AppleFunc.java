@@ -1,8 +1,9 @@
-package io.github.snek;
+package io.github.snek.Functions;
 
 import com.badlogic.gdx.math.MathUtils;
+import io.github.snek.snek;
 
-import static io.github.snek.GameScreen.*;
+import static io.github.snek.Screens.GameScreen.*;
 
 public class AppleFunc {
     final snek game;

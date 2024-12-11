@@ -1,4 +1,4 @@
-package io.github.snek;
+package io.github.snek.Screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -6,6 +6,8 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.ScreenUtils;
+import io.github.snek.Functions.*;
+import io.github.snek.snek;
 
 public class MainMenuScreen implements Screen {
     final snek game;

@@ -1,7 +1,8 @@
-package io.github.snek;
+package io.github.snek.Functions;
 
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.utils.Array;
+import io.github.snek.Enums.*;
 
 import java.util.HashMap;
 

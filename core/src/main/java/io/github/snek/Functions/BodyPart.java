@@ -1,9 +1,9 @@
-package io.github.snek;
+package io.github.snek.Functions;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 
-import static io.github.snek.GameScreen.*;
+import static io.github.snek.Screens.GameScreen.*;
 
 // BodyPart class for the snek's body parts + functions related to the snek's body.
 public class BodyPart {
