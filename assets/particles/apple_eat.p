@@ -2,16 +2,16 @@ red
 - Delay -
 active: false
 - Duration - 
-lowMin: 100.0
-lowMax: 100.0
+lowMin: 200.0
+lowMax: 200.0
 - Count - 
 min: 0
-max: 200
+max: 5
 - Emission - 
 lowMin: 0.0
 lowMax: 0.0
-highMin: 15.0
-highMax: 15.0
+highMin: 45.0
+highMax: 45.0
 relative: false
 scalingCount: 1
 scaling0: 1.0
@@ -60,8 +60,8 @@ timeline0: 0.0
 - X Scale - 
 lowMin: 0.0
 lowMax: 0.0
-highMin: 32.0
-highMax: 32.0
+highMin: 30.0
+highMax: 30.0
 relative: false
 scalingCount: 1
 scaling0: 1.0
@@ -73,8 +73,8 @@ active: false
 active: true
 lowMin: 0.0
 lowMax: 0.0
-highMin: 75.0
-highMax: 75.0
+highMin: 100.0
+highMax: 100.0
 relative: false
 scalingCount: 1
 scaling0: 1.0
@@ -118,30 +118,30 @@ timeline0: 0.0
 timeline1: 1.0
 - Options - 
 attached: false
-continuous: true
+continuous: false
 aligned: false
 additive: true
 behind: true
 premultipliedAlpha: false
 spriteMode: single
 - Image Paths -
-particle.png
+apple_eat.png
 
 
 yellow
 - Delay -
 active: false
 - Duration - 
-lowMin: 100.0
-lowMax: 100.0
+lowMin: 200.0
+lowMax: 200.0
 - Count - 
 min: 0
-max: 28
+max: 45
 - Emission - 
 lowMin: 0.0
 lowMax: 0.0
-highMin: 15.0
-highMax: 15.0
+highMin: 40.0
+highMax: 40.0
 relative: false
 scalingCount: 1
 scaling0: 1.0
@@ -190,8 +190,8 @@ timeline0: 0.0
 - X Scale - 
 lowMin: 0.0
 lowMax: 0.0
-highMin: 32.0
-highMax: 32.0
+highMin: 25.0
+highMax: 25.0
 relative: false
 scalingCount: 1
 scaling0: 1.0
@@ -241,19 +241,19 @@ highMin: 1.0
 highMax: 1.0
 relative: false
 scalingCount: 2
-scaling0: 0.4745768
+scaling0: 0.5762712
 scaling1: 0.0
 timelineCount: 2
 timeline0: 0.0
 timeline1: 1.0
 - Options - 
 attached: false
-continuous: true
+continuous: false
 aligned: false
 additive: true
 behind: false
 premultipliedAlpha: false
 spriteMode: single
 - Image Paths -
-particle.png
+apple_eat.png
 
